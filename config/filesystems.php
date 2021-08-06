@@ -59,7 +59,7 @@ return [
            'bucket' => env ( 'GOOGLE_CLOUD_STORAGE_BUCKET' , 'thorapp-6be87.appspot.com' ),
             'path_prefix' => env ( 'GOOGLE_CLOUD_STORAGE_PATH_PREFIX ' , null ),// opcional: / default / path / to / apply / in / bucket 
            'storage_api_uri' => env ( 'GOOGLE_CLOUD_STORAGE_API_URI' , null ), // ver: URL públicas debajo de 
-           'visibilidad' => 'público' , // opcional: público | privado 
+           'visibilidad' => 'public' , // opcional: público | privado 
        ],
 
     ],

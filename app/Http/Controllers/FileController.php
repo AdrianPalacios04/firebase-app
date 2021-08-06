@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
+
 
 class FileController extends Controller
 {
@@ -15,7 +17,8 @@ class FileController extends Controller
      */
     public function index()
     {
-        //
+        $file = File::all();
+        return view('index',compact('file'));
     }
 
     /**
@@ -25,7 +28,7 @@ class FileController extends Controller
      */
     public function create()
     {
-        //
+    
     }
 
     /**
@@ -37,14 +40,19 @@ class FileController extends Controller
     public function store(Request $request)
     {
         
-        $disk = \Storage::disk('gcs');
-        $imagen = $disk->put('imagen/'.$request->file('url'),'');
-        // $url = $disk->url($imagen);
+        $disk = Storage::disk('gcs');
+        
+        $imagen = $disk->put(
+            'imagen/' . $request->file('url')->getFilename(),
+            $request->file('url')
+        );
+       
+        $url = $disk->url($imagen);
 
-        // $file = File::create([
-        //     'url' => $url
-        // ]);
-        return "true";
+        $file = File::create([
+            'url' => $url
+        ]);
+        return new Response($url);
     }
 
     /**
