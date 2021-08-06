@@ -5,11 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Storage;
-=======
-use Storage;
->>>>>>> d8dd8100ad1dace7bd39cd6d4725db1ffc8f70d7
+
 
 
 class FileController extends Controller
@@ -43,7 +40,6 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< HEAD
         
         $disk = Storage::disk('gcs');
         
@@ -53,21 +49,11 @@ class FileController extends Controller
         );
        
         $url = $disk->url($imagen);
-
-=======
-
-        $disk = Storage::disk('gcs');
-        $imagen = $disk->put(
-            'imagen/' . $request->file('url')->getFilename(),
-            $request->file('url')
-        );
-        $url = $disk->url($imagen);
-
->>>>>>> d8dd8100ad1dace7bd39cd6d4725db1ffc8f70d7
         $file = File::create([
             'url' => $url
         ]);
         return new Response($url);
+      
     }
 
     /**
