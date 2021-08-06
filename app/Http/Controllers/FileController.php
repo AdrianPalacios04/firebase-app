@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Response;
+use Storage;
 
 class FileController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -21,7 +22,7 @@ class FileController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -31,27 +32,30 @@ class FileController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
-        
-        $disk = \Storage::disk('gcs');
-        $imagen = $disk->put('imagen/'.$request->file('url'),'');
-        // $url = $disk->url($imagen);
 
-        // $file = File::create([
-        //     'url' => $url
-        // ]);
-        return "true";
+        $disk = Storage::disk('gcs');
+        $imagen = $disk->put(
+            'imagen/' . $request->file('url')->getFilename(),
+            $request->file('url')
+        );
+        $url = $disk->url($imagen);
+
+        $file = File::create([
+            'url' => $url
+        ]);
+        return new Response($url);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\File  $file
-     * @return \Illuminate\Http\Response
+     * @param File $file
+     * @return Response
      */
     public function show(File $file)
     {
@@ -61,8 +65,8 @@ class FileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\File  $file
-     * @return \Illuminate\Http\Response
+     * @param File $file
+     * @return Response
      */
     public function edit(File $file)
     {
@@ -72,9 +76,9 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\File  $file
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param File $file
+     * @return Response
      */
     public function update(Request $request, File $file)
     {
@@ -84,8 +88,8 @@ class FileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\File  $file
-     * @return \Illuminate\Http\Response
+     * @param File $file
+     * @return Response
      */
     public function destroy(File $file)
     {
